@@ -12,3 +12,8 @@ CLAUDE.local.md
 handoff/
 schem/simulations/
 schem/simulations/
+drill/sim_build/
+drill/*.png
+drill/ff.cir
+/d1.png
+*.prn
