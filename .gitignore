@@ -1,0 +1,14 @@
+__pycache__/
+.venv/
+tx_pm_nco/sim_build/
+results/lna_op/
+results/decks/
+results/*.log
+!results/nco_yosys.log
+deck.cir
+ngspice.log
+# private bridge files: never pushed
+CLAUDE.local.md
+handoff/
+schem/simulations/
+schem/simulations/

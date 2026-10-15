@@ -1,0 +1,8 @@
+* D1 for Xyce
+V1 in 0 12
+R1 in out 4k
+R2 out 0 12k
+RL out 0 6k
+.dc V1 12 12 1
+.print dc v(out)
+.end

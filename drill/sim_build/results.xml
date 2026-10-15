@@ -1,0 +1,10 @@
+<?xml version='1.0' encoding='utf-8'?>
+<testsuites name="cocotb tests"><testsuite name="test_seq101" errors="0" failures="1" skipped="0" tests="1" time="0.019" timestamp="2026-10-15T17:54:59.697119+00:00" hostname="DESKTOP-673OE1K"><testcase classname="test_seq101" name="random_stream" time="0.019"><failure message="detector disagrees with the model&#10;assert [0, 0, 0, 0, 0, 0, ...] == [0, 0, 0, 0, 0, 0, ...]&#10; +  where [0, 0, 0, 0, 0, 0, ...] = model([0, 0, 1, 1, 0, 0, ...])" type="AssertionError">Traceback (most recent call last):
+  File "/home/haris/ee/drill/test_seq101.py", line 28, in random_stream
+    assert got == model(bits), "detector disagrees with the model"
+AssertionError: detector disagrees with the model
+assert [0, 0, 0, 0, 0, 0, ...] == [0, 0, 0, 0, 0, 0, ...]
+ +  where [0, 0, 0, 0, 0, 0, ...] = model([0, 0, 1, 1, 0, 0, ...])
+</failure><properties><property name="cocotb" value="True" /><property name="random_seed" value="1792086899" /><property name="file" value="/home/haris/ee/drill/test_seq101.py" /><property name="line" value="12" /><property name="sim_time_unit" value="ns" /><property name="sim_time_start" value="0.0" /><property name="sim_time_stop" value="300.5" /><property name="sim_time_duration" value="300.5" /><property name="sim_time_ratio" value="15573.44859208753" /><property name="attachment" value="/home/haris/ee/drill/sim_build/seq101.fst" /></properties><system-out>[[ATTACHMENT|/home/haris/ee/drill/sim_build/seq101.fst]]
+</system-out><system-err>Test failed with COCOTB_RANDOM_SEED=1792086899
+</system-err></testcase></testsuite></testsuites>
