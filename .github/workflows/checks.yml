@@ -1,19 +1,26 @@
+# GitHub Actions: on every push, GitHub starts a fresh Ubuntu machine, installs the
+# tools, and runs run_all.py. A green tick on the repo means every check passed on a
+# clean machine, not only on yours: the regression run of L7 7.14, in the cloud.
+# YAML: indentation shows nesting; "- " starts a list item; "key: value" pairs.
 name: checks
+# When to run: on a push, on a pull request, or by hand from the Actions tab.
 on: [push, pull_request, workflow_dispatch]
 jobs:
   run_all:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-24.04          # the same Ubuntu version as your WSL
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v4      # copy the repo onto the machine
+      - uses: actions/setup-python@v5  # install Python 3.12
         with:
           python-version: "3.12"
-      - name: EDA tools
+      - name: EDA tools                # the same apt line as the README's setup
         run: sudo apt-get update && sudo apt-get install -y ngspice iverilog yosys
       - name: Python packages
         run: pip install -r requirements.txt
       - name: Run every block and its checks
-        run: python3 run_all.py
+        run: python3 run_all.py        # a FAIL makes it exit with 1: the run turns red
+      # Keep results/ (CSV files, plots, summary) as a download on the run's page,
+      # even when a check failed (if: always()).
       - uses: actions/upload-artifact@v4
         if: always()
         with:

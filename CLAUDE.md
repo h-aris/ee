@@ -11,3 +11,24 @@
 - Public repo: no personal contact details, nothing confidential from any employer or
   industry project. Only published work may be referenced.
 - Private notes and links live in `CLAUDE.local.md` (gitignored); read it if present.
+
+## Code style: written to be read and learned from
+
+The code is read by an engineer who knows MATLAB and is learning these tools
+through it. Clarity over brevity.
+
+- All imports at the top of the file, `matplotlib.pyplot as plt` included.
+- Names say what a thing is (`constellation_6bit`, `results_by_case`), with
+  units where useful (`skew_ns`); no one- or two-letter names outside short loops.
+- Tables have named columns (pandas), so a selection reads
+  `results[results.pm_bits == 8]` and a column `results.aclr_dBc`.
+- Keep intermediate results in named variables, so they can be plotted later.
+- Each block's `main(show_plots=False)` saves a summary figure and shows it when
+  the file is run directly; `run_all.py` and CI do not. Just before that, a
+  commented plot template (`plt.figure()`, `plt.plot(var_x, var_y, "o-")`,
+  labels) where every variable of `main()` is alive, with example names.
+- Heavy comments: why, not only what, and the Python explained for a MATLAB user.
+- New netlists and schematics: instance names in capitals as type_role (`V_DD`,
+  `S_UP`, `C_SW`, `L_MATCH`, `M_IN`); net names in capitals (`VDD`, `CLK_B`, `OUT`);
+  a `VSS` rail tied to ground by `V_SS VSS 0 0`.
+- A refactor keeps the numbers: `run_all.py` gives the same summary.

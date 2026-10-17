@@ -1,0 +1,15 @@
+* ref.spice: the SCPA unit cell as it must be, the schematic side of LVS.
+* LVS compares this against what Magic extracted from the drawing: same devices,
+* same sizes, same connections, or it reports the difference.
+*
+* The IHP library's SPICE view: transistors written as X instances, as Magic extracts
+* them. (Its CDL view writes them as M devices, which Netgen does not pair with X.)
+.include /foss/pdks/ihp-sg13g2/libs.ref/sg13g2_stdcell/spice/sg13g2_stdcell.spice
+
+* Pins in the order the simulation decks use: input, cap top plate, supply, ground.
+.subckt scpa_unit A top VDD VSS
+* The switch: pin order Y A VDD VSS. Y drives the internal net "out".
+X1 out A VDD VSS sg13g2_inv_4
+* The 5 um x 5 um MIM cap: top plate first, bottom plate ("out", driven by the switch) second.
+XC1 top out cap_cmim w=5e-6 l=5e-6
+.ends

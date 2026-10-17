@@ -1,0 +1,27 @@
+* sim_unit.cir.in: the SCPA unit cell switching at 1 GHz from 1.2 V.
+* A template: run_flow.sh replaces NETLIST and PINS to make two decks,
+*   sim_ref.cir  from ref.spice            (schematic: no wiring, no parasitics)
+*   sim_pex.cir  from scpa_unit_pex.spice  (the layout with its parasitic capacitance)
+* The cap's top plate is held at 0 V, standing in for the PA's output node at AC ground.
+
+* IHP's transistor (typical corner) and capacitor models
+.lib /foss/pdks/ihp-sg13g2/libs.tech/ngspice/models/cornerMOSlv.lib mos_tt
+.lib /foss/pdks/ihp-sg13g2/libs.tech/ngspice/models/cornerCAP.lib cap_typ
+.include NETLIST
+
+VDD vdd 0 1.2
+* 1 GHz square wave: 0 to 1.2 V, 20 ps edges, 480 ps high, period 1 ns
+VIN a 0 PULSE(0 1.2 0 20p 20p 480p 1n)
+XU PINS scpa_unit
+
+.control
+tran 1p 6n
+* Energy from the supply per cycle: average supply current x 1.2 V / 1 GHz.
+* ngspice counts current into the source's + terminal as positive, so the supply's is negative.
+meas tran iavg AVG i(VDD) from=2n to=6n
+let e_fj = -iavg*1.2/1e9*1e15
+print e_fj
+* Delay: input falling through 0.6 V to the output rising through 0.6 V, third cycle.
+meas tran tpd TRIG v(a) VAL=0.6 FALL=3 TARG v(xu.out) VAL=0.6 RISE=3
+.endc
+.end

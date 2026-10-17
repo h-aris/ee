@@ -1,0 +1,34 @@
+pa_full_drive_ngspice
+.include ../../common/models.lib
+
+V_SS   VSS   0    0
+V_DD   VDD   VSS  2.4
+V_CAS  CAS   VSS  1.6
+V_IN   IN    VSS  SIN(0.5 0.9 1e9)
+
+M_IN   MID   IN   VSS  VSS  nch  W=1.2m L=100n nf=120
+M_CAS  DRAIN CAS  MID  VSS  nch  W=1.2m L=100n nf=120
+
+L_D    VDD   DRAIN  4n
+R_LOSS VDD   DRAIN  502.655
+C_TUNE DRAIN VSS    5.25501p
+C_OUT  DRAIN OUT    100p
+R_LOAD OUT   VSS    50
+
+.control
+tran 1p 30n 0 1p
+
+let VDS_CAS = v(DRAIN) - v(MID)
+
+meas tran VOUT_MAX MAX v(OUT) from=20n to=30n
+meas tran VOUT_MIN MIN v(OUT) from=20n to=30n
+meas tran IDD_AVG AVG i(V_DD) from=20n to=30n
+meas tran VDS_CAS_MAX MAX VDS_CAS from=20n to=30n
+meas tran VDS_IN_MAX MAX v(MID) from=20n to=30n
+
+wrdata pa_full_drive_ngspice.txt v(OUT) i(V_DD) v(DRAIN) v(MID)
+
+plot v(OUT) v(DRAIN) v(MID) xlimit 25n 30n
+.endc
+
+.end

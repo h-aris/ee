@@ -1,0 +1,28 @@
+pa_full_drive_xyce
+.include ../../common/models.lib
+
+V_SS   VSS   0    0
+V_DD   VDD   VSS  2.4
+V_CAS  CAS   VSS  1.6
+V_IN   IN    VSS  SIN(0.5 0.9 1e9)
+
+M_IN   MID   IN   VSS  VSS  nch  W=1.2m L=100n nf=120
+M_CAS  DRAIN CAS  MID  VSS  nch  W=1.2m L=100n nf=120
+
+L_D    VDD   DRAIN  4n
+R_LOSS VDD   DRAIN  502.655
+C_TUNE DRAIN VSS    5.25501p
+C_OUT  DRAIN OUT    100p
+R_LOAD OUT   VSS    50
+
+.tran 1p 30n 0 1p
+
+.print tran V(OUT) I(V_DD) V(DRAIN) V(MID)
+
+.measure tran VOUT_MAX  MAX V(OUT) FROM=20n TO=30n
+.measure tran VOUT_MIN  MIN V(OUT) FROM=20n TO=30n
+.measure tran IDD_AVG   AVG I(V_DD) FROM=20n TO=30n
+.measure tran VDS_CAS_MAX MAX {V(DRAIN)-V(MID)} FROM=20n TO=30n
+.measure tran VDS_IN_MAX  MAX V(MID) FROM=20n TO=30n
+
+.end

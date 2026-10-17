@@ -17,3 +17,12 @@ drill/*.png
 drill/ff.cir
 /d1.png
 *.prn
+drill/w.txt
+# xschem output and the image start script's settings file (route B)
+simulations/
+.designinit
+# Xyce outputs (tx_pa_cascode/xyce, xschem's simulations/)
+*.mt0
+*.raw
+tx_pa_cascode/xyce/compare_xyce.png
+tx_pa_cascode/ngspice/*.txt

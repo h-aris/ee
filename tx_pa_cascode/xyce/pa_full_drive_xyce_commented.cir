@@ -1,0 +1,42 @@
+pa_full_drive_xyce_commented
+* Cascode class-AB PA at full drive (0.9 V peak in), for Xyce.
+* Same circuit as pa_full_drive_xyce.cir, with comments. Line 1 is the title: SPICE skips it.
+* Run in the image, in this folder:  Xyce pa_full_drive_xyce_commented.cir
+
+.include ../../common/models.lib                 ; transistor models nch, pch (generic BSIM4)
+
+* ---------- Supplies and input, each from its rail to VSS ----------
+
+V_SS   VSS   0    0                              ; VSS is SPICE ground (node 0)
+V_DD   VDD   VSS  2.4                            ; supply: two stacked 1.2 V devices
+V_CAS  CAS   VSS  1.6                            ; cascode gate bias
+V_IN   IN    VSS  SIN(0.5 0.9 1e9)               ; 0.5 V bias + 0.9 V peak at 1 GHz
+
+* ---------- The stack: drain gate source body model W L fingers ----------
+
+M_IN   MID   IN   VSS  VSS  nch  W=1.2m L=100n nf=120   ; input device
+M_CAS  DRAIN CAS  MID  VSS  nch  W=1.2m L=100n nf=120   ; cascode device, on top
+
+* ---------- Drain tank, DC block, load ----------
+
+L_D    VDD   DRAIN  4n                           ; tank inductor, also feeds VDD
+R_LOSS VDD   DRAIN  502.655                      ; its loss at Q = 20
+C_TUNE DRAIN VSS    5.25501p                     ; tank capacitor, tuned by pa.py
+C_OUT  DRAIN OUT    100p                         ; DC block
+R_LOAD OUT   VSS    50                           ; 50 ohm load
+
+* ---------- Analysis ----------
+
+.tran 1p 30n 0 1p                                ; 1 ps steps, 30 ns (30 periods)
+
+* ---------- Outputs: waveforms to the .prn file, numbers to the .mt0 file ----------
+
+.print tran V(OUT) I(V_DD) V(DRAIN) V(MID)       ; output, supply current, both drains
+
+.measure tran VOUT_MAX    MAX V(OUT)             FROM=20n TO=30n   ; output peak
+.measure tran VOUT_MIN    MIN V(OUT)             FROM=20n TO=30n   ; output trough
+.measure tran IDD_AVG     AVG I(V_DD)            FROM=20n TO=30n   ; supply current, average
+.measure tran VDS_CAS_MAX MAX {V(DRAIN)-V(MID)}  FROM=20n TO=30n   ; stress on M_CAS
+.measure tran VDS_IN_MAX  MAX V(MID)             FROM=20n TO=30n   ; stress on M_IN
+
+.end

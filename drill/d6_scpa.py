@@ -10,4 +10,4 @@ scpa.LSER = 1 / (scpa.W0**2 * scpa.CTOT)
 for n in (64, 16):
     h, pout, psup = scpa.simulate(n)
     print(f"n = {n}: Pout = {pout*1e3:.3f} mW, efficiency = {100*pout/psup:.1f} %, "
-          f"theory {100*scpa.theory_eff(n):.1f} %")
+          f"theory {100*scpa.theory_efficiency(n):.1f} %")

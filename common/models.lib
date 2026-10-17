@@ -1,0 +1,4 @@
+* models.lib: the generic BSIM4 cards of common/models.py, for xschem and Xyce decks.
+* Generated from models.py; edit models.py, not this file.
+.model nch nmos level=54 version=4.8.2 toxe=2.0n toxp=1.7n toxm=2.0n vth0=0.40 u0=0.035 vsat=1.0e5 rdsw=150 pclm=1.0 cgso=0.3n cgdo=0.3n cgbo=0
+.model pch pmos level=54 version=4.8.2 toxe=2.0n toxp=1.7n toxm=2.0n vth0=-0.40 u0=0.012 vsat=0.8e5 rdsw=300 pclm=1.0 cgso=0.3n cgdo=0.3n cgbo=0
